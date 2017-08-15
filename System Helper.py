@@ -75,6 +75,10 @@ def init_recorder():
     multiprocessing.Process(target=thread2record_status).daemon(True).start()
 
 
+# Task trigger
+def task_trigger():
+
+
 # main function
 if __name__ == "__main__":
     os.chdir(file_dir)
