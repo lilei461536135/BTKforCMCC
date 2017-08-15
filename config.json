@@ -1,0 +1,18 @@
+{
+  "print": "on",
+  "switch":
+  {
+    "disk_idle": "on",
+    "fan_reduce": "on",
+    "uncore_tune": "on"
+  },
+  "fan_param":
+  {
+    "num_seq": "",
+    "mode_cmd": "0x3a 0x7a",
+    "speed_cmd": "0x3a 0x78"
+  },
+  "time_seq": "",
+  "fan_seq": "",
+  "uncore_seq": ""
+}
