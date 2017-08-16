@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-from printf import printf
 from common import *
+from lib import printf
+from lib import update_app_run_duration
+from lib import update_app_status
 import multiprocessing
+from multiprocessing import Queue
 import time
 import subprocess
-import queue
 
 # global variables
 current_time = 0
-status_queue = queue.Queue()
+app_start_time = 0
+app_duration = 0
+status_queue = Queue(0)
 app_status = 's'  # app status, s: stopped r: running s2r: stopped2run r2s: run2stopped
 
 
@@ -23,7 +27,9 @@ def thread2update_time():
 # Initialize Clock, update every 1s
 def init_clock():
     printf("Initialize clock")
-    multiprocessing.Process(target=thread2update_time).daemon(True).start()
+    p = multiprocessing.Process(target=thread2update_time)
+    p.daemon = True
+    p.start()
 
 
 # check app status, return process id or -1
@@ -41,7 +47,7 @@ def check_app_status(app, keyword):
 
 
 # get app status
-def thread2record_status():
+def thread2record_status(queue):
     global app_status
     status_new = 's'
     status_old = 's'
@@ -53,36 +59,75 @@ def thread2record_status():
             status_old = 's'
         if status_old == 's' and status_new == 's':
             app_status = 's'
-            status_queue.put(app_status)
         elif status_old == 's' and status_new == 'r':
             app_status = 's2r'
-            status_queue.put(app_status)
         elif status_old == 'r' and status_new == 'r':
             app_status = 'r'
-            status_queue.put(app_status)
         elif status_old == 'r' and status_new == 's':
             app_status = 'r2s'
         else:
             pass
         printf("APP status is %s" % app_status)
-        status_queue.put(app_status)
-        time.sleep(2)
+        queue.put(app_status)
+        time.sleep(3)
 
 
 # Initialize app status recorder
-def init_recorder():
+def init_status_recorder():
     printf("Initialize app status recorder")
-    multiprocessing.Process(target=thread2record_status).daemon(True).start()
+    p = multiprocessing.Process(target=thread2record_status, args=(status_queue,))
+    p.daemon = True
+    p.start()
 
 
-# Task trigger
-def task_trigger():
+def task_tune_disk():
+    print("helo")
 
+
+def task_tune_uncore():
+    print("helo")
+
+
+def task_tune_fan():
+    print("helo")
+
+
+# Task manager
+def task_manager(queue):
+    global app_start_time
+    global current_time
+    global app_duration
+    task_func = {
+        "fan": task_tune_fan,
+        "uncore": task_tune_uncore,
+        "disk": task_tune_disk
+    }
+    while True:
+        status = queue.get()
+        update_app_status(app_status)
+        if status == 's2r':
+            app_start_time = time.time()
+            pid = {}
+            for key in config['switch'].keys():
+                if config['switch'][key] == 'on':
+                    pid[key] = "pid_" + key
+                    pid[key] = multiprocessing.Process(target=task_func[key])
+                    pid[key].daemon = True
+                    pid[key].start()
+        elif status == 'r':
+            app_duration = int(current_time) - int(app_start_time)
+            update_app_run_duration(app_duration)
+        elif status == 's':
+            app_start_time = 0
+            app_duration = 0
+            update_app_run_duration(app_duration)
+        time.sleep(1)
 
 # main function
 if __name__ == "__main__":
     os.chdir(file_dir)
     init_clock()
-    init_recorder()
+    init_status_recorder()
+    task_manager(status_queue)
 
 

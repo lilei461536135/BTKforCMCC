@@ -19,3 +19,11 @@ sg_start = file_dir + "\Sg3_Utils\sg_start.exe"
 sg_sat_set_features = file_dir + "\Sg3_Utils\sg_sat_set_features.exe"
 
 
+# Task decorator
+def task_start_print(name):
+    def _print_format(func):
+        def __print_wrap(*argc, **kwargs):
+            pass
+
+        return __print_wrap
+    return _print_format
