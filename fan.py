@@ -1,8 +1,7 @@
 from common import *
 from lib import printf
-from lib import get_app_status
-from lib import get_app_run_duration
 import subprocess
+import time
 
 
 def set_as_manual():
@@ -49,11 +48,15 @@ def set_fan_speed(value):
         sys.exit(-1)
 
 
-def task_tune_fan():
-    while True:
-        if get_app_status() == 's':
-            break
-        for key in sorted(config['fan_param']['time_seq'].keys(), key=lambda a: int(a)):
-            duration = get_app_run_duration()
-            if int(duration) > int(config['fan_param']['time_seq'][key]):
-                set_fan_speed(config['fan_param']['speed_seq'][key])
+def task_tune_fan(status_queue, duration_queue):
+    for key in sorted(config['fan_param']['time_seq'].keys(), key=lambda a: int(a)):
+        while int(duration_queue.get()) < int(config['fan_param']['time_seq'][key]):  # waiting for shift speed
+            if status_queue.get() == 's':  # if spec power stopped, return
+                set_as_auto()
+                return
+            time.sleep(1)
+        if key == '1':
+            set_as_manual()
+        time.sleep(2)
+        set_fan_speed(config['fan_param']['speed_seq'][key])
+
