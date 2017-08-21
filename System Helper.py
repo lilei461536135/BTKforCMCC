@@ -6,6 +6,8 @@ from multiprocessing import Queue
 import time
 import subprocess
 from fan import task_tune_fan
+from disk import task_tune_disk
+from uncore import task_tune_uncore
 
 
 # check app status, return process id or -1
@@ -48,14 +50,6 @@ def process2record_status(queue):
             queue.put(app_status)
         status_old = status_new
         time.sleep(1)
-
-
-def task_tune_disk():
-    print("helo")
-
-
-def task_tune_uncore():
-    print("helo")
 
 
 # Task manager

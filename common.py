@@ -17,13 +17,6 @@ except NameError:  # We are the main py2exe script, not a module
 ipmitool = file_dir + "\winipmitool-1.8.7\ipmitool.exe"
 sg_start = file_dir + "\Sg3_Utils\sg_start.exe"
 sg_sat_set_features = file_dir + "\Sg3_Utils\sg_sat_set_features.exe"
+h2orte = config['uncore_param']['h2orte']
 
 
-# Task decorator
-def task_start_print(name):
-    def _print_format(func):
-        def __print_wrap(*argc, **kwargs):
-            pass
-
-        return __print_wrap
-    return _print_format
