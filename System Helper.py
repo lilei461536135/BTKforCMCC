@@ -30,7 +30,7 @@ def process2record_status(queue):
     status_old = 's'
     while True:
         # pid0 = check_app_status("java.exe", "SpecPowerSsj")  # get app status
-        pid0 = check_app_status("notepad.exe", "notepad")
+        pid0 = check_app_status("java.exe", "SpecPowerSsj")
         if pid0 != -1:  # app is running
             status_new = 'r'
         else:  # app is stopped
