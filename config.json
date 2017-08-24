@@ -1,0 +1,218 @@
+{
+  "switch":
+  {
+    "fan":"on",
+    "cpu":"off",
+    "pm8060":"off",
+    "disk": "on",
+    "uncore":"on"
+  },
+  "fan":
+  {
+    "mode_cmd":"0x3a 0x7a",
+    "speed_cmd":"0x3a 0x78"
+  },
+  "step_para":
+  {
+    "100":
+    {
+      "time":30,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "90":
+    {
+      "time":1240,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "80":
+    {
+      "time":1550,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "70":
+    {
+      "time":1860,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "60":
+    {
+      "time":2170,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "50":
+    {
+      "time":2480,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "40":
+    {
+      "time":2790,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "30":
+    {
+      "time":3100,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "20":
+    {
+      "time":3410,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "10":
+    {
+      "time":3720,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    },
+    "0":
+    {
+      "time":4030,
+      "speed":40,
+      "uncore":1800,
+      "cpu":
+      {
+        "max":100,
+        "min":0
+      }
+    }
+  },
+  "disk":
+  {
+    "time":10,
+    "dev":
+    {
+        "1":
+        {
+            "label":"PD2",
+            "type":"sata"
+        }
+    }
+  },
+  "pm8060":
+  {
+    "time": 10,
+    "controller_id": 1,
+    "ld":
+    {
+      "volume_1":
+      {
+        "channel": 0,
+        "id": 8,
+        "size":1024
+      },
+      "volume_2":
+      {
+        "channel": 0,
+        "id": 9,
+        "size":1024
+      },
+      "volume_3": {
+        "channel": 0,
+        "id": 10,
+        "size":1024
+      },
+      "volume_4":
+      {
+        "channel": 0,
+        "id": 11,
+        "size":1024
+      },
+      "volume_5":
+      {
+        "channel": 0,
+        "id": 12,
+        "size":1024
+      },
+      "volume_6":
+      {
+        "channel": 0,
+        "id": 13,
+        "size":1024
+      },
+      "volume_7":
+      {
+        "channel": 0,
+        "id": 14,
+        "size":1024
+      },
+      "volume_8":
+      {
+        "channel": 0,
+        "id": 15,
+        "size":1024
+      },
+      "volume_9":
+      {
+        "channel": 0,
+        "id": 16,
+        "size":1024
+      },
+      "volume_10":
+      {
+        "channel": 0,
+        "id": 17,
+        "size":1024
+      }
+    }
+  }
+}
