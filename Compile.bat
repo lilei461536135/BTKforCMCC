@@ -1,0 +1,1 @@
+c:\Python34\Scripts\pyinstaller.exe -c -F WindowsHelper.py

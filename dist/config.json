@@ -1,165 +1,99 @@
 {
-  "switch":
+  "print": "on",
+  "target":{"app":"java.exe", "keyword":"SpecPowerSsj"},
+  "tasks": {"1":"fan", "2":"disk", "3":"uncore", "4":"ospm"},
+  "fan_param":
   {
-    "fan":"on",
-    "cpu":"off",
-    "pm8060":"off",
-    "disk": "on",
-    "uncore":"on"
+    "mode_cmd":"0x3c 0x2f",
+    "speed_cmd":"0x3c 0x2d"
   },
-  "fan":
+  "uncore_param":
   {
-    "mode_cmd":"0x3a 0x7a",
-    "speed_cmd":"0x3a 0x78"
+    "default_val": 18
   },
-  "step_para":
+  "disk_param":
   {
-    "100":
+    "time":10,
+    "dev":
+    {
+      "1":
+      {
+        "label":"PD2",
+        "type":"sata"
+      }
+    }
+  },
+  "ospm_param":
+  {
+    "time": 10
+  },
+  "step_param":
+  {
+    "1":
     {
       "time":30,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "90":
+    "2":
     {
       "time":1240,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "80":
+    "3":
     {
       "time":1550,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "70":
+    "4":
     {
       "time":1860,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "60":
+    "5":
     {
       "time":2170,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "50":
+    "6":
     {
       "time":2480,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "40":
+    "7":
     {
       "time":2790,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "30":
+    "8":
     {
       "time":3100,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "20":
+    "9":
     {
       "time":3410,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
     "10":
     {
       "time":3720,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
+      "uncore":18
     },
-    "0":
+    "11":
     {
       "time":4030,
       "speed":40,
-      "uncore":1800,
-      "cpu":
-      {
-        "max":100,
-        "min":0
-      }
-    }
-  },
-  "disk":
-  {
-    "time":10,
-    "dev":
-    {
-        "1":
-        {
-            "label":"PD2",
-            "type":"sata"
-        }
-    }
-  },
-  "pm8060":
-  {
-    "time": 10,
-    "controller_id": 1,
-    "ld":
-    {
-      "volume_1":
-      {
-        "channel": 0,
-        "id": 8,
-        "size":1024
-      }
+      "uncore":18
     }
   }
 }

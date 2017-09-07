@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['WindowsHelper.py'],
-             pathex=['E:\\Workspace\\1.自动化工具开发\\1.开发\\16.BTK4CMCC'],
+             pathex=['E:\\Workspace\\1.自动化工具开发\\1.开发\\16.BTK4CMCC\\new'],
              binaries=[],
              datas=[],
              hiddenimports=[],

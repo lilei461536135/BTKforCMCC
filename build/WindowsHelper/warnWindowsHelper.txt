@@ -1,17 +1,17 @@
-missing module named resource - imported by posix, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named posix - imported by os, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named _posixsubprocess - imported by subprocess, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named 'org.python' - imported by pickle, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py, xml.sax
-missing module named readline - imported by cmd, code, pdb, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-excluded module named _frozen_importlib - imported by importlib, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named _winreg - imported by platform, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
+missing module named resource - imported by posix, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named posix - imported by os, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named _posixsubprocess - imported by subprocess, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named 'org.python' - imported by pickle, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py, xml.sax
+missing module named readline - imported by cmd, code, pdb, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+excluded module named _frozen_importlib - imported by importlib, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named _winreg - imported by platform, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
 missing module named _scproxy - imported by urllib.request
-missing module named java - imported by platform, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named 'java.lang' - imported by platform, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py, xml.sax._exceptions
-missing module named vms_lib - imported by platform, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named termios - imported by tty, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py, getpass
-missing module named grp - imported by tarfile, shutil, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named pwd - imported by posixpath, tarfile, shutil, http.server, webbrowser, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py, getpass
-missing module named ce - imported by os, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named _dummy_threading - imported by dummy_threading, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
-missing module named org - imported by copy, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\WindowsHelper.py
+missing module named java - imported by platform, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named 'java.lang' - imported by platform, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py, xml.sax._exceptions
+missing module named vms_lib - imported by platform, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named termios - imported by tty, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py, getpass
+missing module named grp - imported by tarfile, shutil, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named pwd - imported by posixpath, tarfile, shutil, http.server, webbrowser, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py, getpass
+missing module named ce - imported by os, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named _dummy_threading - imported by dummy_threading, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py
+missing module named org - imported by copy, E:\Workspace\1.自动化工具开发\1.开发\16.BTK4CMCC\new\WindowsHelper.py

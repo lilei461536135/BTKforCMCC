@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
-from FanModule import *
-from CPUModule import *
-from PM8060Module import *
 import os
 import sys
 import time
+import re
 import threading
+import subprocess
+from lib.globalvars import *
+from lib.fan import task2tune_fan
+from lib.disk import task2tune_disk
+from lib.uncore import task2tune_uncore
+from lib.ospm import task2tune_ospm
+scheduler_func = {}
+for key in config['tasks'].keys():
+    scheduler_func[config['tasks'][key]] = 'task2tune_' + config['tasks'][key]
 
 try:
     file_dir = os.path.dirname(os.path.abspath(__file__))
@@ -13,122 +20,30 @@ except NameError:  # We are the main py2exe script, not a module
     file_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 os.chdir(file_dir)
 
-start_time = 0
+start_time = [0]  # important!!! Using list for transmit address
 # global variables
-app_status = 's'  # available value: stopped(s) running(r) stopped2start(s2s) running2stopped(r2s)
+app_status = ['s']  # available value: stopped(s) running(r) stopped2start(s2s) running2stopped(r2s)
 status_lock = threading.Lock()  # lock between monitor and scheduler
-
-
-# task to tune fan speed
-def task2tune_fan():
-    set_as_manual()  # set fan control mode as manual
-    duration = time.time()- start_time
-    for key in ["100", "90", "80", "70", "60", "50", "40", "30", "20", "10", "0"]:
-        while int(duration) <= int(config["step_para"][key]["time"]):
-            if app_status == 'r':
-                time.sleep(1)
-                duration = time.time() - start_time
-            elif app_status == 's':
-                set_as_auto()
-                return
-            else:
-                break
-        if app_status == 'r':
-            set_fan_speed(config["step_para"][key]["speed"])
-        else:
-            break
-
-
-# task to tune cpu utilization
-def task2tune_cpu():
-    global start_time
-    duration = time.time() - start_time
-    for key in ["100", "90", "80", "70", "60", "50", "40", "30", "20", "10", "0"]:
-        while int(duration) <= int(config["step_para"][key]["time"]):
-            if app_status == 'r':
-                time.sleep(1)
-                duration = time.time() - start_time
-            elif app_status == 's':
-                set_processor_value(0, 100)
-                return
-            else:
-                break
-        if app_status == 'r':
-            set_processor_value(config["step_para"][key]["cpu"]["min"], config["step_para"][key]["cpu"]["max"])
-        else:
-            break
-
-
-def task2tune_pm8060():
-    global start_time
-    global app_status
-    duration = time.time() - start_time
-    while int(duration) <= int(config["pm8060"]["time"]):
-        if app_status == 'r':
-            time.sleep(1)
-            duration = time.time() - start_time
-        elif app_status == 's':
-                restore_pm8060()
-                return
-        else:
-            break
-    for volume in config["pm8060"]["ld"].keys():
-        if app_status == 'r':
-            pm8060_power_saving(volume)
-        else:
-            break
-            
-        
-def task2tune_disk():
-    global start_time
-    global app_status
-    duration = time.time() - start_time
-    while int(duration) <= int(config["disk"]["time"]):  # wait
-        if app_status == 'r':
-            time.sleep(1)
-            duration = time.time() - start_time
-        elif app_status == 's':
-            return 
-        else:
-            break
-    for key in config['disk']['dev'].keys():
-        if config['disk']['dev'][key]['type'] == 'sata':
-            sata_sleep(config['disk']['dev'][key]['label'])
-        elif config['disk']['dev'][key]['type'] == 'sas':
-            sas_sleep(config['disk']['dev'][key]['label'])
-        else:
-            pass
-            
-            
-def task2tune_uncore():
-    duration = time.time()- start_time
-    for key in ["100", "90", "80", "70", "60", "50", "40", "30", "20", "10", "0"]:
-        while int(duration) <= int(config["step_para"][key]["time"]):
-            if app_status == 'r':
-                time.sleep(1)
-                duration = time.time() - start_time
-            elif app_status == 's':
-                set_uncore('1800')
-                return
-            else:
-                break
-        if app_status == 'r':
-            set_uncore(config["step_para"][key]["uncore"])
-        else:
-            break
 
 
 # check app status, return process id or -1
 def check_app_status(app, keyword):
     cmd = "wmic PROCESS where \"name like \'" + "%" + app + "%\'\" " + "GET CommandLine,ProcessId"
+    printf("Executing %s" % cmd)
     pid = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     out, err = pid.communicate()
+    printf("Returned output: %s" % out.decode())
+    printf("Returned error: %s" % err.decode())
+    printf("searching %s from output" % keyword)
     if out.decode().find(keyword) >= 0:
+        printf("%s has been found" % keyword)
         for line in out.decode().split(os.linesep):
             if line.find(keyword) >= 0:
                 process_id = line.strip().split()[-1]
+                printf("process id is %s" % process_id)
                 return process_id
     else:
+        printf("%s has not been found" % keyword)
         return -1
 
 
@@ -136,31 +51,21 @@ def check_app_status(app, keyword):
 def thread_scheduler():
     global app_status
     global start_time
-    scheduler_func = {
-        "fan": task2tune_fan,
-        "cpu": task2tune_cpu,
-        "pm8060": task2tune_pm8060,
-        "disk": task2tune_disk,
-        "uncore": task2tune_uncore
-    }
+    global scheduler_func
     while True:
         if status_lock.acquire():
-            if DEBUG:
-                print("I got it!")
-            if app_status == 's2r':  # stopped to run
-                app_status = 'r'
-                start_time = time.time()
+            printf("I got it!")
+            if app_status[0] == 's2r':  # stopped to run
+                app_status[0] = 'r'
+                start_time[0] = time.time()
                 thread_n = {}
-                for key in config["switch"].keys():
-                    if config["switch"][key] == "on":
+                for key in scheduler_func.keys():
                         thread_n[key] = "thread_%s" % key
-                        thread_n[key] = threading.Thread(target=scheduler_func[key])
-                        thread_n[key].setDaemon(True)
+                        thread_n[key] = threading.Thread(target=eval(scheduler_func[key]), args=(app_status, start_time))
                         thread_n[key].start()
-                        if DEBUG:
-                            print("%s has been started!" % scheduler_func[key])
-            elif app_status == 'r2s':
-                app_status = 's'
+                        printf("%s has been started!" % scheduler_func[key])
+            elif app_status[0] == 'r2s':
+                app_status[0] = 's'
             else:
                 pass
             # release thread lock
@@ -175,21 +80,20 @@ if __name__ == "__main__":
     thread2.start()
     # monitor app status, update every 5 seconds
     while status_lock.acquire():
-        pid0 = check_app_status("java.exe", "SpecPowerSsj")  # get app status
+        pid0 = check_app_status(config['target']['app'], config['target']['keyword'])  # get app status
         if pid0 != -1:  # app is running
             app_status_new = 'r'
         else:  # app is stopped
             app_status_new = 's'
         if app_status_old == 's' and app_status_new == 's':
-            app_status = 's'
+            app_status[0] = 's'
         elif app_status_old == 's' and app_status_new == 'r':
-            app_status = 's2r'
+            app_status[0] = 's2r'
         elif app_status_old == 'r' and app_status_new == 'r':
-            app_status = 'r'
+            app_status[0] = 'r'
         elif app_status_old == 'r' and app_status_new == 's':
-            app_status = 'r2s'
-        if DEBUG:
-            print("SpecPower running status is: %s" % app_status)
+            app_status[0] = 'r2s'
+        printf("%s running status is: %s" % (config['target']['app'], app_status[0]))
         app_status_old = app_status_new  # update app_status_old value
         status_lock.release()
         time.sleep(5)
